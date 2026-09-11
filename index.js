@@ -17,16 +17,26 @@ const menu = [
     },
 ]
 
-const cashInRegister = 100
+let cashInRegister = 100
 const orderQueue = []
 
 
-function addNewPizza({name, price}) {
-    menu.push({name, price})
+function addNewPizza(pizzaObj) {
+    menu.push(pizzaObj)
 }
 
 
-addNewPizza({ name: "Napolitan", price: 7 });
+function placeOrder(pizzaName) {
+    menu.map((item) => {
+        if (item.name == pizzaName) {
+            cashInRegister += item.price
+            orderQueue.push({item, status: "ordered"})
+            return orderQueue
+        }
+    })
+}
 
+placeOrder("Pepperoni")
 
-console.log(menu);
+console.log(cashInRegister)
+console.log(orderQueue)
