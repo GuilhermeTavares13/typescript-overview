@@ -9,7 +9,7 @@ type Order = {
     status: string;
 }
 
-const menu = [
+const menu: Pizza[] = [
     {
         name: "Margherita",
         price: 8
