@@ -1,3 +1,4 @@
+"use strict";
 const menu = [
     {
         name: "Margherita",
@@ -15,28 +16,30 @@ const menu = [
         name: "Veggie",
         price: 9
     },
-]
-
-let cashInRegister = 100
-const orderQueue = []
-
-
+];
+let cashInRegister = 100;
+const orderQueue = [];
 function addNewPizza(pizzaObj) {
-    menu.push(pizzaObj)
+    menu.push(pizzaObj);
 }
-
-
 function placeOrder(pizzaName) {
-    menu.map((item) => {
-        if (item.name == pizzaName) {
-            cashInRegister += item.price
-            orderQueue.push({item, status: "ordered"})
-            return orderQueue
-        }
-    })
+    const selectedPizza = menu.find(pizzaObj => pizzaObj.name === pizzaName);
+    if (!selectedPizza) {
+        console.error(`${pizzaName} does not exist in the menu`);
+        return;
+    }
+    cashInRegister += selectedPizza.price;
+    const newOrder = { id: orderQueue.length + 1, pizza: selectedPizza, status: "ordered" };
+    orderQueue.push(newOrder);
+    return newOrder;
 }
-
-placeOrder("Pepperoni")
-
-console.log(cashInRegister)
-console.log(orderQueue)
+function completeOrder(orderId) {
+    const selectedOrderIndex = orderQueue.findIndex((orderObj) => orderObj.id === orderId);
+    orderQueue[selectedOrderIndex].status = "completed";
+    return orderQueue[selectedOrderIndex];
+}
+placeOrder("Pepperoni");
+console.log(cashInRegister);
+console.log(orderQueue);
+completeOrder(1);
+console.log(orderQueue);
