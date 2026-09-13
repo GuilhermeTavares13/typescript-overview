@@ -1,0 +1,3 @@
+let myName: "Bob" = "Bob"
+
+

@@ -1,6 +1,19 @@
-let ages: number[] = [100, 10]
+type Person = {
+    name: string,
+    age: number,
+    isStudent: boolean
+}
 
-ages.map((age) => console.log(age));
+let person1: Person = {
+    name: "Joe",
+    age: 42,
+    isStudent: true
+}
 
+let person2: Person = {
+    name: "Jill",
+    age: 66,
+    isStudent: false
+}
 
-ages.push()
+let people: Array<Person> = [person1, person2]

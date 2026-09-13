@@ -35,6 +35,9 @@ function placeOrder(pizzaName) {
 }
 function completeOrder(orderId) {
     const selectedOrderIndex = orderQueue.findIndex((orderObj) => orderObj.id === orderId);
+    if (selectedOrderIndex === -1) {
+        return;
+    }
     orderQueue[selectedOrderIndex].status = "completed";
     return orderQueue[selectedOrderIndex];
 }

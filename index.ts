@@ -1,28 +1,35 @@
 type Pizza = {
+    id: number;
     name: string;
     price: number;
 }
 
+type Status = "completed" | "ordered"
+
 type Order = {
     id: number;
     pizza: Pizza;
-    status: string;
+    status: Status;
 }
 
 const menu: Pizza[] = [
     {
+        id: 1,
         name: "Margherita",
         price: 8
     },
     {
+        id: 2,
         name: "Pepperoni",
         price: 10
     },
     {
+        id: 3,
         name: "Hawaiian",
         price: 10
     },
     {
+        id: 4,
         name: "Veggie",
         price: 9
     },
@@ -55,6 +62,11 @@ function placeOrder(pizzaName: string) {
 
 function completeOrder(orderId: number) {
     const selectedOrderIndex = orderQueue.findIndex((orderObj) => orderObj.id === orderId);
+    
+    if (selectedOrderIndex === -1) {
+        return;
+    }
+    
     orderQueue[selectedOrderIndex].status = "completed" 
     return orderQueue[selectedOrderIndex]
 }
