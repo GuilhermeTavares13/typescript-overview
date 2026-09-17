@@ -4,6 +4,11 @@ type Pizza = {
     price: number;
 }
 
+type SubTypeAddNewPizza<T> = T extends { name: infer N; price: infer P} ? {name: N; price: P} : never;
+
+type TypeAddNewPizza = SubTypeAddNewPizza<Pizza>;
+
+
 type Status = "completed" | "ordered"
 
 type Order = {
@@ -12,24 +17,26 @@ type Order = {
     status: Status;
 }
 
+let nextPizzaId = 1;
+
 const menu: Pizza[] = [
     {
-        id: 1,
+        id: nextPizzaId++,
         name: "Margherita",
         price: 8
     },
     {
-        id: 2,
+        id: nextPizzaId++,
         name: "Pepperoni",
         price: 10
     },
     {
-        id: 3,
+        id: nextPizzaId++,
         name: "Hawaiian",
         price: 10
     },
     {
-        id: 4,
+        id: nextPizzaId++,
         name: "Veggie",
         price: 9
     },
@@ -39,12 +46,16 @@ let cashInRegister = 100
 const orderQueue: Order[] = []
 
 
-function addNewPizza(pizzaObj: Pizza) {
-    menu.push(pizzaObj)
+function addNewPizza(pizzaObj: TypeAddNewPizza): void {
+    const newPizza: Pizza = {
+        id: nextPizzaId++,
+        ...pizzaObj
+    }
+    menu.push(newPizza)
 }
 
 
-function placeOrder(pizzaName: string) {
+function placeOrder(pizzaName: string): Order | undefined {
     const selectedPizza = menu.find(pizzaObj => pizzaObj.name === pizzaName)
     
     if (!selectedPizza) {
@@ -60,7 +71,7 @@ function placeOrder(pizzaName: string) {
 }
 
 
-function completeOrder(orderId: number) {
+function completeOrder(orderId: number): Order | undefined {
     const selectedOrderIndex = orderQueue.findIndex((orderObj) => orderObj.id === orderId);
     
     if (selectedOrderIndex === -1) {
@@ -71,11 +82,21 @@ function completeOrder(orderId: number) {
     return orderQueue[selectedOrderIndex]
 }
 
-placeOrder("Pepperoni")
+function getPizzaDetail(identifier: string | number): Pizza | undefined {
+    if (typeof(identifier) === 'string') {
+        return menu.find((pizzaObj) => pizzaObj.name.toLowerCase() === identifier.toLowerCase());
+    } 
+    else if (typeof(identifier) === 'number') {
+        return menu.find((pizzaObj) => pizzaObj.id === identifier);
+    } 
+    else {
+        throw new TypeError("Parameter `identifier` must be either a string or a number");
+    }
+}
 
-console.log(cashInRegister)
-console.log(orderQueue)
 
-completeOrder(1)
+addNewPizza({ name: "Chocolatte", price: 90 });
+addNewPizza({ name: "Glass", price: 666 });
 
-console.log(orderQueue)
+console.log(getPizzaDetail(5));
+console.log(getPizzaDetail(6));
