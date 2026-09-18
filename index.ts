@@ -4,11 +4,6 @@ type Pizza = {
     price: number;
 }
 
-type SubTypeAddNewPizza<T> = T extends { name: infer N; price: infer P} ? {name: N; price: P} : never;
-
-type TypeAddNewPizza = SubTypeAddNewPizza<Pizza>;
-
-
 type Status = "completed" | "ordered"
 
 type Order = {
@@ -46,12 +41,14 @@ let cashInRegister = 100
 const orderQueue: Order[] = []
 
 
-function addNewPizza(pizzaObj: TypeAddNewPizza): void {
+function addNewPizza(pizzaObj: Omit<Pizza, "id">): Pizza {
     const newPizza: Pizza = {
         id: nextPizzaId++,
         ...pizzaObj
     }
     menu.push(newPizza)
+
+    return newPizza;
 }
 
 
@@ -93,6 +90,7 @@ function getPizzaDetail(identifier: string | number): Pizza | undefined {
         throw new TypeError("Parameter `identifier` must be either a string or a number");
     }
 }
+
 
 
 addNewPizza({ name: "Chocolatte", price: 90 });

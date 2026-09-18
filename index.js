@@ -1,18 +1,23 @@
 "use strict";
+let nextPizzaId = 1;
 const menu = [
     {
+        id: nextPizzaId++,
         name: "Margherita",
         price: 8
     },
     {
+        id: nextPizzaId++,
         name: "Pepperoni",
         price: 10
     },
     {
+        id: nextPizzaId++,
         name: "Hawaiian",
         price: 10
     },
     {
+        id: nextPizzaId++,
         name: "Veggie",
         price: 9
     },
@@ -20,7 +25,12 @@ const menu = [
 let cashInRegister = 100;
 const orderQueue = [];
 function addNewPizza(pizzaObj) {
-    menu.push(pizzaObj);
+    const newPizza = {
+        id: nextPizzaId++,
+        ...pizzaObj
+    };
+    menu.push(newPizza);
+    return newPizza;
 }
 function placeOrder(pizzaName) {
     const selectedPizza = menu.find(pizzaObj => pizzaObj.name === pizzaName);
@@ -41,8 +51,18 @@ function completeOrder(orderId) {
     orderQueue[selectedOrderIndex].status = "completed";
     return orderQueue[selectedOrderIndex];
 }
-placeOrder("Pepperoni");
-console.log(cashInRegister);
-console.log(orderQueue);
-completeOrder(1);
-console.log(orderQueue);
+function getPizzaDetail(identifier) {
+    if (typeof (identifier) === 'string') {
+        return menu.find((pizzaObj) => pizzaObj.name.toLowerCase() === identifier.toLowerCase());
+    }
+    else if (typeof (identifier) === 'number') {
+        return menu.find((pizzaObj) => pizzaObj.id === identifier);
+    }
+    else {
+        throw new TypeError("Parameter `identifier` must be either a string or a number");
+    }
+}
+addNewPizza({ name: "Chocolatte", price: 90 });
+addNewPizza({ name: "Glass", price: 666 });
+console.log(getPizzaDetail(5));
+console.log(getPizzaDetail(6));
